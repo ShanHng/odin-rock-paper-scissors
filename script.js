@@ -45,9 +45,13 @@ function playRound(playerSelection, computerSelection) {
             break;
     }
 
+    return outcome;
+}
+
+function getRoundOutcomeMessage(outcome, playerSelection, computerSelection) {
     // return message corresponding to game scenario
-    formattedPlayerSelection = playerSelectionLowerCase.charAt(0).toUpperCase() + playerSelectionLowerCase.slice(1);
-    formattedComputerSelection = computerSelectionLowerCase.charAt(0).toUpperCase() + computerSelectionLowerCase.slice(1);
+    formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
+    formattedComputerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase();
     const MESSAGE_WIN = `You win! ${formattedPlayerSelection} beats ${formattedComputerSelection}`  
     const MESSAGE_DRAW = `A draw. Computer chose ${formattedComputerSelection}. Try again!`
     const MESSAGE_LOSE = `You lose! ${formattedComputerSelection} beats ${formattedPlayerSelection}`  
@@ -64,3 +68,29 @@ function playRound(playerSelection, computerSelection) {
     }
 }
    
+function getGameOutcomeMessage(outcome) {
+    const MESSAGE_WIN_GAME = 'You won the game!';
+    const MESSAGE_DRAW_GAME = 'It\'s a draw!';
+    const MESSAGE_LOSE_GAME = 'You lost the game :<<'
+    
+    return (outcome > 0) ? MESSAGE_WIN_GAME
+    : (outcome < 0) ? MESSAGE_LOSE_GAME : MESSAGE_DRAW_GAME;
+
+}
+
+function game() {
+    let gameOutcome = 0;
+    console.log("Rock Paper Scissors! There will be five rounds.")
+
+    for(let i = 0; i < 5; i++) {
+        console.log(`Round ${i + 1}`);
+        const playerMove = prompt("What is your move?");
+        const computerMove = getComputerChoice();
+        const roundOutcome = playRound(playerMove, computerMove);
+        const roundOutcomeMessage = getRoundOutcomeMessage(roundOutcome, playerMove, computerMove);
+        console.log(roundOutcomeMessage);
+        gameOutcome += roundOutcome;
+    }
+
+    console.log(`Game has ended. ${getGameOutcomeMessage(gameOutcome)}`); 
+}
