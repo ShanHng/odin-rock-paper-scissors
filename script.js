@@ -82,15 +82,16 @@ function game() {
     let gameOutcome = 0;
     console.log("Rock Paper Scissors! There will be five rounds.")
 
-    for(let i = 0; i < 5; i++) {
-        console.log(`Round ${i + 1}`);
+    // for(let i = 0; i < 5; i++) {
+    //     console.log(`Round ${i + 1}`);
         const playerMove = prompt("What is your move?");
         const computerMove = getComputerChoice();
         const roundOutcome = playRound(playerMove, computerMove);
         const roundOutcomeMessage = getRoundOutcomeMessage(roundOutcome, playerMove, computerMove);
         console.log(roundOutcomeMessage);
         gameOutcome += roundOutcome;
-    }
+    // }
 
     console.log(`Game has ended. ${getGameOutcomeMessage(gameOutcome)}`); 
 }
+
