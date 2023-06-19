@@ -18,45 +18,55 @@ function getComputerChoice() {
     }
 }
 
+function updateScore(outcome) {
+    switch(outcome) {
+        case 1: 
+            playerScore += 1;
+            break;
+        case -1:
+            compScore += 1;
+            break;
+        case 0:
+            // do nothing 
+    }
+
+    playerScoreDisplay.textContent = `Your score: ${playerScore}`;
+    compScoreDisplay.textContent = `PC's score: ${compScore}`;
+}
+
 function playRound(playerSelection, computerSelection) {
     // display both player and computer selection
     playerMoveDisplay.textContent = `You selected ${playerSelection}.`
     compMoveDisplay.textContent = `Computer selected ${computerSelection}.`
-    
-    // parse both player's and computer's input 
-    const playerSelectionLowerCase = playerSelection.toLowerCase();
-    const computerSelectionLowerCase = computerSelection.toLowerCase();
 
     // process inputs of game. main logic of the game goes here
     // store outcome of game in a variable. outcome of game is either 1, 0 or -1.
     let outcome;
-    switch (playerSelectionLowerCase) {
-        case("rock"):
-            outcome = computerSelectionLowerCase === "rock" 
-            ? 0 : (computerSelectionLowerCase === "scissors" ? 1 : -1)
+    switch (playerSelection) {
+        case("Rock"):
+            outcome = computerSelection === "Rock" 
+            ? 0 : (computerSelection === "Scissors" ? 1 : -1)
             break;
 
-        case("paper"):
-            outcome = computerSelectionLowerCase === "paper" 
-            ? 0 : (computerSelectionLowerCase === "rock" ? 1 : -1)
+        case("Paper"):
+            outcome = computerSelection === "Paper" 
+            ? 0 : (computerSelection === "Rock" ? 1 : -1)
             break;
 
-        case("scissors"):
-            outcome = computerSelectionLowerCase === "scissors" 
-            ? 0 : (computerSelectionLowerCase === "paper" ? 1 : -1)
+        case("Scissors"):
+            outcome = computerSelection === "Scissors" 
+            ? 0 : (computerSelection === "Paper" ? 1 : -1)
             break;
     }
 
     roundOutcomeDisplay.textContent = getRoundOutcomeMessage(outcome, playerSelection, computerSelection);
-
+    updateScore(outcome);
 
     return outcome;
 }
 
 function getRoundOutcomeMessage(outcome, playerSelection, computerSelection) {
     // return message corresponding to game scenario
-    // formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-    // formattedComputerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase();
     const MESSAGE_WIN = `You win! ${playerSelection} beats ${computerSelection}`  
     const MESSAGE_DRAW = `A draw. Computer chose ${computerSelection}. Try again!`
     const MESSAGE_LOSE = `You lose! ${computerSelection} beats ${playerSelection}`  
@@ -104,6 +114,11 @@ function game() {
 const playerMoveDisplay = document.querySelector(".player-move");
 const compMoveDisplay = document.querySelector(".comp-move");
 const roundOutcomeDisplay = document.querySelector(".round-outcome");
+
+let playerScore = 0;
+let compScore = 0;
+const playerScoreDisplay = document.querySelector(".player-score");
+const compScoreDisplay = document.querySelector(".comp-score");
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', function (e) {
