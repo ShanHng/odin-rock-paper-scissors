@@ -34,37 +34,45 @@ function updateScore(outcome) {
     compScoreDisplay.textContent = `PC's score: ${compScore}`;
 }
 
+function updateMoves(playerSelection, computerSelection) {
+    playerMoveDisplay.textContent = `You selected ${playerSelection}.`
+    compMoveDisplay.textContent = `Computer selected ${computerSelection}.`
+}
+
 function isGameEnd() {
     return playerScore >=5 || compScore >= 5;
 }
 
-function playRound(playerSelection, computerSelection) {
-    // display both player and computer selection
-    playerMoveDisplay.textContent = `You selected ${playerSelection}.`
-    compMoveDisplay.textContent = `Computer selected ${computerSelection}.`
-
-    // process inputs of game. main logic of the game goes here
-    // store outcome of game in a variable. outcome of game is either 1, 0 or -1.
-    let outcome;
+function decideRoundWinner(playerSelection, computerSelection) {
     switch (playerSelection) {
         case("Rock"):
-            outcome = computerSelection === "Rock" 
+            return computerSelection === "Rock" 
             ? 0 : (computerSelection === "Scissors" ? 1 : -1)
             break;
 
         case("Paper"):
-            outcome = computerSelection === "Paper" 
+            return computerSelection === "Paper" 
             ? 0 : (computerSelection === "Rock" ? 1 : -1)
             break;
 
         case("Scissors"):
-            outcome = computerSelection === "Scissors" 
+            return computerSelection === "Scissors" 
             ? 0 : (computerSelection === "Paper" ? 1 : -1)
             break;
     }
+}
+
+function playRound(playerSelection, computerSelection) {
+    
+    updateMoves(playerSelection, computerSelection);
+
+    // store outcome of game in a variable. outcome of game is either 1, 0 or -1.
+    let outcome = decideRoundWinner(playerSelection, computerSelection);
 
     roundOutcomeDisplay.textContent = getRoundOutcomeMessage(outcome, playerSelection, computerSelection);
+    
     updateScore(outcome);
+
     if (isGameEnd()) endGame();
 
     return outcome;
@@ -97,13 +105,13 @@ function endGame() {
     buttons.forEach(button => button.disabled = true);
 }
 
+let playerScore = 0;
+let compScore = 0;
 
 const playerMoveDisplay = document.querySelector(".player-move");
 const compMoveDisplay = document.querySelector(".comp-move");
 const roundOutcomeDisplay = document.querySelector(".round-outcome");
 
-let playerScore = 0;
-let compScore = 0;
 const playerScoreDisplay = document.querySelector(".player-score");
 const compScoreDisplay = document.querySelector(".comp-score");
 
@@ -111,9 +119,7 @@ const gameInstruction = document.querySelector(".instr");
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', function (e) {
-    playerMove = this.className;
     const roundOutcome = playRound(this.className, getComputerChoice());
-    
 }))
 
 
