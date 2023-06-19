@@ -34,6 +34,10 @@ function updateScore(outcome) {
     compScoreDisplay.textContent = `PC's score: ${compScore}`;
 }
 
+function isGameEnd() {
+    return playerScore >=5 || compScore >= 5;
+}
+
 function playRound(playerSelection, computerSelection) {
     // display both player and computer selection
     playerMoveDisplay.textContent = `You selected ${playerSelection}.`
@@ -61,6 +65,7 @@ function playRound(playerSelection, computerSelection) {
 
     roundOutcomeDisplay.textContent = getRoundOutcomeMessage(outcome, playerSelection, computerSelection);
     updateScore(outcome);
+    if (isGameEnd()) endGame();
 
     return outcome;
 }
@@ -83,31 +88,13 @@ function getRoundOutcomeMessage(outcome, playerSelection, computerSelection) {
     }
 }
    
-function getGameOutcomeMessage(outcome) {
+function endGame() {
     const MESSAGE_WIN_GAME = 'You won the game!';
-    const MESSAGE_DRAW_GAME = 'It\'s a draw!';
     const MESSAGE_LOSE_GAME = 'You lost the game :<<'
-    
-    return (outcome > 0) ? MESSAGE_WIN_GAME
-    : (outcome < 0) ? MESSAGE_LOSE_GAME : MESSAGE_DRAW_GAME;
 
-}
-
-function game() {
-    let gameOutcome = 0;
-    console.log("Rock Paper Scissors! There will be five rounds.")
-
-    // for(let i = 0; i < 5; i++) {
-    //     console.log(`Round ${i + 1}`);
-        const playerMove = prompt("What is your move?");
-        const computerMove = getComputerChoice();
-        const roundOutcome = playRound(playerMove, computerMove);
-        const roundOutcomeMessage = getRoundOutcomeMessage(roundOutcome, playerMove, computerMove);
-        console.log(roundOutcomeMessage);
-        gameOutcome += roundOutcome;
-    // }
-
-    console.log(`Game has ended. ${getGameOutcomeMessage(gameOutcome)}`); 
+    gameInstruction.textContent = "Game has ended! " + 
+        ((playerScore > compScore) ? MESSAGE_WIN_GAME : MESSAGE_LOSE_GAME);
+    buttons.forEach(button => button.disabled = true);
 }
 
 
@@ -120,12 +107,13 @@ let compScore = 0;
 const playerScoreDisplay = document.querySelector(".player-score");
 const compScoreDisplay = document.querySelector(".comp-score");
 
+const gameInstruction = document.querySelector(".instr");
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', function (e) {
     playerMove = this.className;
-    compMove = getComputerChoice();
     const roundOutcome = playRound(this.className, getComputerChoice());
-    console.log(roundOutcome);
+    
 }))
 
 
