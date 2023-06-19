@@ -95,3 +95,9 @@ function game() {
     console.log(`Game has ended. ${getGameOutcomeMessage(gameOutcome)}`); 
 }
 
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', function (e) {
+    const roundOutcome = playRound(this.className, getComputerChoice());
+    console.log(roundOutcome);
+}))
+
