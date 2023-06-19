@@ -19,7 +19,9 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
-    // your code here!
+    // display both player and computer selection
+    playerMoveDisplay.textContent = `You selected ${playerSelection}.`
+    compMoveDisplay.textContent = `Computer selected ${computerSelection}.`
     
     // parse both player's and computer's input 
     const playerSelectionLowerCase = playerSelection.toLowerCase();
@@ -45,16 +47,19 @@ function playRound(playerSelection, computerSelection) {
             break;
     }
 
+    roundOutcomeDisplay.textContent = getRoundOutcomeMessage(outcome, playerSelection, computerSelection);
+
+
     return outcome;
 }
 
 function getRoundOutcomeMessage(outcome, playerSelection, computerSelection) {
     // return message corresponding to game scenario
-    formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
-    formattedComputerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase();
-    const MESSAGE_WIN = `You win! ${formattedPlayerSelection} beats ${formattedComputerSelection}`  
-    const MESSAGE_DRAW = `A draw. Computer chose ${formattedComputerSelection}. Try again!`
-    const MESSAGE_LOSE = `You lose! ${formattedComputerSelection} beats ${formattedPlayerSelection}`  
+    // formattedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();
+    // formattedComputerSelection = computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1).toLowerCase();
+    const MESSAGE_WIN = `You win! ${playerSelection} beats ${computerSelection}`  
+    const MESSAGE_DRAW = `A draw. Computer chose ${computerSelection}. Try again!`
+    const MESSAGE_LOSE = `You lose! ${computerSelection} beats ${playerSelection}`  
     switch(outcome) {
         case 0:
             return MESSAGE_DRAW;
@@ -95,9 +100,18 @@ function game() {
     console.log(`Game has ended. ${getGameOutcomeMessage(gameOutcome)}`); 
 }
 
+
+const playerMoveDisplay = document.querySelector(".player-move");
+const compMoveDisplay = document.querySelector(".comp-move");
+const roundOutcomeDisplay = document.querySelector(".round-outcome");
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => button.addEventListener('click', function (e) {
+    playerMove = this.className;
+    compMove = getComputerChoice();
     const roundOutcome = playRound(this.className, getComputerChoice());
     console.log(roundOutcome);
 }))
+
+
 
